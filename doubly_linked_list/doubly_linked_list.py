@@ -95,7 +95,8 @@ class DoublyLinkedList:
             while cur.next:
                 cur = cur.next
             self.tail = cur
-            removed = self.tail.next
+            removed = self.tail
+            self.tail = removed.prev
             self.tail.next = None
             return removed
             
@@ -108,11 +109,11 @@ class DoublyLinkedList:
         if self.head is None:
             return None
         #check if the node is already at head
-        if self.head == node:
+        if self.head.value == node:
             return self.head
         #if not already at head
             #check if the node to move is tail
-        if self.tail == node:
+        if self.tail.value == node:
             move = self.tail
             to = self.head
             newTail = move.prev
@@ -126,13 +127,13 @@ class DoublyLinkedList:
             #and move over one step to the right the Node that was at head already
         else:
             cur = self.head
-            while cur.next != node:
+            while cur.value != node:
                 cur = cur.next
             move = cur
             to = self.head
             move.prev.next = move.next
             move.next.prev = move.prev
-            move.prev = None
+            self.head.prev = move
             move.next = to
             self.head = move
             return self.head
@@ -145,14 +146,80 @@ class DoublyLinkedList:
     List and inserts it as the new tail node of the List.
     """
     def move_to_end(self, node):
-        pass
+           #check if list is empty
+        if self.head is None:
+            return None
+        #check if is already in there
+        if self.tail.value == node:
+            return self.tail
+        #check if the value to move is head
+        if self.head.value == node:
+            move = self.head
+            to = self.tail
+            newHead = move.next
+            move.next.prev = None
+            self.head = newHead
+            to.next = move
+            move.next = None
+            self.tail = move
+            return self.tail
+        else:
+            cur = self.head
+            while cur.value != node:
+                cur = cur.next
+            move = cur
+            to = self.tail
+            move.prev.next = move.next
+            move.next.prev = move.prev
+            to.next = move
+            move.next = None
+            self.tail = move
+            return self.tail
+
+         
 
     """
     Deletes the input node from the List, preserving the 
     order of the other elements of the List.
     """
     def delete(self, node):
-        pass
+        #deletes the Node if it is the only one present
+            cur = self.head
+            while cur: #run until cur is None
+                if cur.value == node and cur == self.head:
+                    if not cur.next:
+                        cur = None
+                        self.head = None
+                        return 
+                    #case 2: the Node to be deleted is head, but LL is not empty
+                    else:
+                        nxt = cur.next
+                        cur.next = None
+                        nxt.prev = None
+                        cur = None
+                        self.head = nxt
+                        return
+               #will become True in any iteration of the loop where cur.data equals Node
+                elif cur.value == node:
+                
+                    #case 3
+                    if cur.next:
+                        nxt = cur.next
+                        prev = cur.prev
+                        prev.next = nxt
+                        nxt.prev = prev
+                        cur.next = None
+                        cur.prev = None
+                        cur = None
+                        return
+                    else:
+                        prev = cur.prev
+                        prev.next = None
+                        cur.prev = None
+                        cur= None
+                        return
+
+                cur = cur.next
 
     """
     Finds and returns the maximum value of all the nodes 
@@ -160,5 +227,7 @@ class DoublyLinkedList:
     """
     def get_max(self):
         pass
+
+
 
 
