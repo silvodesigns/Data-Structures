@@ -92,7 +92,7 @@ class Stack:
         self.storage.push(value)
 
     def pop(self):
-         self.storage.pop()
+         return self.storage.pop()
 
     def print_stack(self):
         self.storage.print_list()

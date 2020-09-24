@@ -28,3 +28,16 @@ class Queue:
         if len(self.storage) == 0:
             return None
         self.storage.pop(0)
+
+    def print_q(self):
+        for x in self.storage:
+            print(x)
+
+myQ = Queue()
+myQ.enqueue(1)
+myQ.enqueue(2)
+myQ.enqueue(3)
+myQ.print_q()
+myQ.dequeue()
+myQ.dequeue()
+myQ.print_q()
